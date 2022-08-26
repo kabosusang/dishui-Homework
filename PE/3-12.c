@@ -106,6 +106,8 @@ default:
 printf("文件对齐为:0x%x\n",pOptionHeader->FileAlignment);
 printf("内存对齐为:0x%x\n",pOptionHeader->SectionAlignment);
 
+pSectionHeader = (PIMAGE_SECTION_HEADER)((char *)pOptionHeader+pPEHeader->SizeOfOptionalHeader);
+printf("头表名字为%s\n",pSectionHeader->Name);
 }
 
 }
