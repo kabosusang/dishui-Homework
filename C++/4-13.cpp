@@ -152,6 +152,77 @@ DWORD Vector<T_ELE>::at(DWORD dwIndex,T_ELE* pEle)
 }					
 					
 //其他函数。。自己实现
+template<class T_ELE>
+VOID Vector<T_ELE>::pop_back()
+{
+	//删除最后一个元素
+	memset(&m_pVector[m_dwIndex],0,sizeof(T_ELE));
+	//其余属性赋值
+	m_dwIndex--;
+
+}
+  
+template<class T_ELE>
+//返回在不增容的情况下，还能存储多少元素
+DWORD Vector<T_ELE>::capacity()
+{
+return m_dwLen-m_dwIndex;
+}
+					                   
+template<class T_ELE>
+ //清空所有元素	
+VOID Vector<T_ELE>::clear()
+{
+  for (int i = m_dwIndex; i > 0; i--)
+  {
+	memset(m_pVector[i],0,sizeof(T_ELE));
+	/* code */
+  }
+
+	m_dwIndex = 0;
+}
+					                    //判断Vector是否为空 返回true时为空
+template<class T_ELE>
+BOOL Vector<T_ELE>::empty()
+{
+	switch (m_dwIndex)
+	{
+	case 0:
+		return true;
+		break;
+	default:
+		return FALSE;
+		break;
+	}
+}
+				        
+template<class T_ELE>
+//删除指定元素	
+VOID Vector<T_ELE>::erase(DWORD dwIndex)
+{ // 1 2 3 4   m_dwIndex = 3   dwIndex = 2
+//   0 1 2 3   
+	if(m_dwIndex>=dwIndex)
+	{
+		memcpy(&m_pVector[dwIndex],&m_pVector[dwIndex+1],sizeof(T_ELE)*(m_dwIndex-dwIndex));
+		m_dwIndex--;
+	}
+	else
+	{
+		printf("改元素未赋值");
+	}
+}
+
+				                       
+template<class T_ELE>
+ //返回Vector元素数量的大小
+DWORD Vector<T_ELE>::size()
+{
+	return sizeof(T_ELE)*m_dwIndex;
+}
+
+
+
+
 
 void TestVector()
 {
@@ -163,10 +234,27 @@ void TestVector()
 	int x = 0;	
 
 	pVector->at(2,&x);
-
 	printf("%d\n",x);
+	printf("%d\n",pVector->capacity());
+	printf("%d\n",pVector->size());
 
+	//减掉一个后的大小
+	pVector->pop_back();
+	printf("%d\n",pVector->size());
+
+	//测试删除元素3
+	int c = 0;
+	pVector->erase(2);
+	pVector->at(2,&c);
+	printf("删除元素2测试\n");
+	printf("%d\n",pVector->size());
+	//测试后面元素是否移动到删除位置
+	printf("%d\n",c);
 }
+
+
+
+
 int main()
 {
 	TestVector();
